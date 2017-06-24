@@ -1,0 +1,30 @@
+<html lang="es">
+{% load staticfiles %}
+{% load i18n %}
+<head>
+	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+	<link rel="stylesheet" href="{% static 'css/login_registro.css' %}">
+	<link href="https://fonts.googleapis.com/css?family=Pacifico" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Muli" rel="stylesheet">
+	<title>Social Route - {% trans "Registro" %}</title>
+</head>
+<body>
+
+	<h1>{% trans "Registro de usuario" %}</h1>
+	{% if form.errors %}
+		<p style="color:red">{% trans "Por favor, corrija lo siguiente:" %}</p><br/>
+	{% endif %}
+	{% if error %}
+		<p style="color:red">{{ error }}</p>
+	{% endif %}
+	<div>
+		<form action="" method="post" class="form_registro">{% csrf_token %}
+			<table>
+				{{ form.as_table}}
+			</table>
+			<input type="submit" value="{% trans 'Registrarse' %}">
+		</form>
+	</div>
+</body>
+</html>

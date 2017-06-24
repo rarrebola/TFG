@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+{% load i18n %}
+<html lang="es">
+<head>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+	<link rel="stylesheet" href="{% static 'css/inicio.css' %}">
+	<link href="https://fonts.googleapis.com/css?family=Pacifico" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Muli" rel="stylesheet">
+    <meta charset="UTF-8">
+    <title>Social Route</title>
+</head>
+<body>
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <a class="navbar-brand" href="{% url 'inicio' %}">Social Route</a>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <form class="navbar-form navbar-left" action="/busqueda/" method="get">
+            <div class="form-group">
+                <input type="text" class="form-control" name="consulta" placeholder="{% trans 'Búsqueda' %}">
+            </div>
+            <button type="submit" class="btn btn-default" value="Buscar"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+          </form>
+          <ul class="nav navbar-nav">
+              <div class = "dropdown">
+                  <a href="{% url 'miPerfil' %}" class="btn btn-primary" role="button">{% trans "Mi perfil" %}</a>
+                  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                      <span class="caret"></span>
+                  </button>
+                  <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu1">
+                      <li><a href="{% url 'crearRuta' %}">{% trans "Crear ruta" %}</a> </li>
+                      <li><a href="{% url 'crearLugarInteres' %}">{% trans "Crear lugar de interés" %}</a> </li>
+                      <li role="separator" class="divider"></li>
+                      <li><a href="{% url 'miPerfil' %}">{% trans "Mi perfil" %}</a> </li>
+                      <li><a href="{% url 'editarPerfil' %}">{% trans "Editar perfil" %}</a> </li>
+                      <li><a class="barra" href="{% url 'logout'%}">{% trans "Cerrar sesión" %}</a></li>
+                  </ul>
+              </div>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <h1 id = "hueco"></h1>
+    <a class="btn btn-primary" href="{% url 'crearRuta' %}" id="nueva-ruta"> <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> {% trans "Crear una nueva ruta" %}</a><br/>
+    <div id="datos">
+        <h2>Tus rutas</h2>
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <ul class="nav nav-pills">
+                    <li role="presentation" class="active"><a href="#rutas_creadas" data-toggle="tab">{% trans "Rutas creadas" %}</a></li>
+                    <li role="presentation"><a href="#rutas_seguidas" data-toggle="tab">{% trans "Rutas seguidas" %}</a></li>
+                </ul>
+                <div class="tab-content clearfix">
+                    <div class="tab-pane active" id="rutas_creadas">
+                        {% if rutas_creadas %}
+                        <div class="panel panel-default">
+                            <!-- Table -->
+                            <table class="table">
+                                {% for ruta in rutas_creadas %}
+                                <tr>
+                                    <td><a href="{% url 'ruta' ruta.id %}">{{ ruta.titulo }}</a></td>
+                                </tr>
+                                {% endfor %}
+                            </table>
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="tab-pane" id="rutas_seguidas">
+                {% if rutas_seguidas %}
+                <div class="panel panel-default">
+                    <!-- Table -->
+                    <table class="table">
+                        {% for ruta in rutas_seguidas %}
+                        <tr>
+                            <td><a href="{% url 'ruta' ruta.id %}">{{ ruta.titulo }}</a></td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+                {% endif %}
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+    <div id="timeline">
+        <h1>Timeline</h1><br/>
+        {% if logs %}
+            {% for log in logs %}
+                {% if log.usuario %}
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><a href="{% url 'usuario' log.usuario.id %}"> {{ log.usuario.alias }}</a> - {{log.fecha | date:"d M Y"}}</h3>
+                    </div>
+                    <div class="panel-body">
+                        {% trans "El usuario " %}<a href="{% url 'usuario' log.usuario.id %}"> {{ log.usuario.alias }}</a>
+                        {% trans " ha " %} {{log.log}} {% trans " la ruta " %} <a href="{% url 'ruta' log.ruta.id %}">{{log.ruta.titulo}} </a>.
+                    </div>
+                </div>
+                {% endif %}
+            {% endfor %}
+        {% else %}
+            <h3>{% trans "No hay ninguna actualización" %}</h3>
+        {% endif %}
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+</body>
+</html>

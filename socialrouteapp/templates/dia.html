@@ -1,0 +1,232 @@
+    <!DOCTYPE html>
+    {% load staticfiles %}
+    {% load i18n %}
+    <html lang="es">
+    <head>
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="{% static 'css/ruta.css' %}">
+        <link href="https://fonts.googleapis.com/css?family=Pacifico" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Muli" rel="stylesheet">
+        <meta charset="UTF-8">
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <title>Social Route - {% trans "Página de día" %}</title>
+    </head>
+    <body>
+        <nav class="navbar navbar-default navbar-fixed-top">
+          <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+              <a class="navbar-brand" href="{% url 'inicio' %}">Social Route</a>
+            </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+              <form class="navbar-form navbar-left" action="/busqueda/" method="get">
+                <div class="form-group">
+                    <input type="text" class="form-control" name="consulta" placeholder="{% trans 'Búsqueda' %}">
+                </div>
+                <button type="submit" class="btn btn-default" value="Buscar"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+              </form>
+              <ul class="nav navbar-nav">
+                  <div class = "dropdown">
+                      <a href="{% url 'miPerfil' %}" class="btn btn-primary" role="button">{% trans "Mi perfil" %}</a>
+                      <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                          <span class="caret"></span>
+                      </button>
+                      <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu1">
+                          <li><a href="{% url 'crearRuta' %}">{% trans "Crear ruta" %}</a> </li>
+                          <li><a href="{% url 'crearLugarInteres' %}">{% trans "Crear lugar de interés" %}</a> </li>
+                          <li role="separator" class="divider"></li>
+                          <li><a href="{% url 'miPerfil' %}">{% trans "Mi perfil" %}</a> </li>
+                          <li><a href="{% url 'editarPerfil' %}">{% trans "Editar perfil" %}</a> </li>
+                          <li><a class="barra" href="{% url 'logout'%}">{% trans "Cerrar sesión" %}</a></li>
+                      </ul>
+                  </div>
+              </ul>
+            </div>
+          </div>
+        </nav>
+        <h1>{{ dia.titulo }}</h1>
+        <div id="map" style="width: 1500px; height: 300px; display: block; margin: auto;">
+    <!--<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false">
+     </script>-->
+     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCNx9_c2bC-8-xDu05Z53GVjlDh0meCz7U&callback=initMap"
+        async defer></script>
+     <script type="text/javascript">
+     var geocoder;
+     var bounds;
+     var map;
+     var infowindow;
+
+     function initMap(){
+
+      infowindow = new google.maps.InfoWindow();
+      var mapOptions = {
+        zoom: 10,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+      }
+      map = new google.maps.Map(document.getElementById("map"), mapOptions);
+      bounds = new google.maps.LatLngBounds();
+      geocoder = new google.maps.Geocoder();
+    }
+    var delay = 100;
+     function geocodeAddress(address, next) {
+
+        geocoder.geocode({address:address}, function (results,status)
+          {
+             if (status == google.maps.GeocoderStatus.OK) {
+              var p = results[0].geometry.location;
+              var lat=p.lat();
+              var lng=p.lng();
+              createMarker(address,lat,lng);
+            }
+            else {
+               if (status == google.maps.GeocoderStatus.OVER_QUERY_LIMIT) {
+                nextAddress--;
+                delay++;
+              } else {
+                            }
+            }
+            next();
+          }
+        );
+     }
+     function createMarker(add,lat,lng) {
+       var contentString = add;
+       var marker = new google.maps.Marker({
+         position: new google.maps.LatLng(lat,lng),
+         map: map,
+               });
+
+      google.maps.event.addListener(marker, 'click', function() {
+         infowindow.setContent(contentString);
+         infowindow.open(map,marker);
+       });
+
+       bounds.extend(marker.position);
+     }
+      var cont = 0;
+      var locations = []
+      {% for lugar_interes in lugares_interes %}
+        locations[cont] = '{{ lugar_interes.direccion }}, {{lugar_interes.localidad }}';
+        cont++;
+      {% endfor %}
+      var nextAddress = 0;
+      function theNext() {
+        if (nextAddress < locations.length) {
+          setTimeout('geocodeAddress("'+locations[nextAddress]+'",theNext)', delay);
+          nextAddress++;
+        } else {
+          map.fitBounds(bounds);
+        }
+      }
+      theNext();
+    </script>
+    </div>
+        <div class="cuerpo">
+            <p>{{ dia.descripcion }}<br/>
+            {% trans "Precio" %}: {{ dia.precio }}<br/>
+            <br/>
+            <a href="{{request.META.HTTP_REFERER}}"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>{% trans "Volver" %}</a>
+            {% if usuario == dia.creador %}
+                <a href="{% url 'borrarDia' dia.id %}" onclick="return confirm('¿Borrar el día?')"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span>{% trans "Borrar" %}</a>
+                    <a href="{% url 'editarDia' dia.id %}"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>{% trans "Editar" %}</a><br/></p>
+        </div>
+            <form id="buscar-li">
+                {% csrf_token %}
+                    <h2>{% trans "Añadir lugares de interés" %}</h2>
+                    <input type="hidden" name="id_dia" value={{dia.id}} />
+                    <input type="text" name="consulta" placeholder="{% trans 'Ciudad' %}">
+
+                <button type="submit" value="Buscar" class="busqueda"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+            </form><br/>
+            {% if buscado %}
+            <a href="{% url 'crearLugarInteres' %}" class="nueva-ruta">{% trans "¿No existe el lugar de interés que estás buscando? Créalo aquí" %}</a><br/>
+            {% endif %}
+            {% if consulta_lugares_interes %}
+                <form id="add-li">{% csrf_token %}
+                    <input type="hidden" name="id_dia" value={{dia.id}} />
+                    <select name="lugares_interes" multiple>
+                        {% for lugar_interes in consulta_lugares_interes %}
+                            <option value="{{lugar_interes.id}}">{{lugar_interes.nombre}}</option>
+                        {% endfor %}
+                    </select><br/>
+                    <input type="submit" value="Añadir">
+                </form><br/>
+
+            {% endif %}
+        {% else %}
+            </p>
+        </div>
+        {% endif %}
+        {% if lugares_interes %}
+        <h2>{% trans "Lugares de interés" %}</h2>
+        <div class="cuerpo">
+                <div class="panel panel-default">
+                    <!-- Table -->
+                    <table class="table">
+                      {% for lugar_interes in lugares_interes %}
+                    <tr>
+                    <td><a href="{% url 'lugarInteres' lugar_interes.id %}">{{ lugar_interes.nombre }}</a></td>
+                    {% if usuario == dia.creador %}
+                    <td><a onclick="quitarLugarInteres({{lugar_interes.id}})"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a></td>
+                    {% endif %}
+                    </tr>
+                {% endfor %}
+                    </table>
+                </div>
+            </div>
+        {% endif %}
+
+        <script type="text/javascript">
+
+            $('#buscar-li').submit(function(event){
+                    event.preventDefault();
+                    $.ajax({
+                        data: $(this).serialize(),
+                        type: 'POST',
+                        url: '/busqueda_li/',
+                        success: function(data){
+                            $('body').html(data);
+                        },
+                        error: function(){
+                            alert("Error");
+                        }
+                    });
+                });
+
+            $('#add-li').submit(function(event){
+                    event.preventDefault();
+                    $.ajax({
+                        data: $(this).serialize(),
+                        type: 'POST',
+                        url: '/add_lugar_interes/',
+                        success: function(data){
+                            $('body').html(data);
+                        },
+                        error: function(){
+                            alert("Error");
+                        }
+                    });
+                });
+
+            function quitarLugarInteres(id_lugarInteres){
+                var confirmacion = confirm('¿Quitar el lugar de interés?');
+                if (confirmacion == true){
+                    var $url = "/"+id_lugarInteres + "/quitarLugarInteres/";
+                    $.ajax({
+                            url: $url,
+                            success: function(data){
+                                $('body').html(data);
+                            },
+                            error: function(){
+                                alert("Error");
+                            }
+                    });
+                }
+            }
+        </script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    </body>
+    </html>

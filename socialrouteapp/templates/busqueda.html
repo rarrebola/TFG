@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+{% load i18n %}
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+	<link rel="stylesheet" href="{% static 'css/inicio.css' %}">
+	<link href="https://fonts.googleapis.com/css?family=Pacifico" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Muli" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta charset="UTF-8">
+    <title>{% trans "Búsqueda" %}</title>
+</head>
+<body>
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <a class="navbar-brand" href="{% url 'inicio' %}">Social Route</a>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <form class="navbar-form navbar-left" action="/busqueda/" method="get">
+            <div class="form-group">
+                <input type="text" class="form-control" name="consulta" placeholder="{% trans 'Búsqueda' %}">
+            </div>
+            <button type="submit" class="btn btn-default" value="Buscar"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+          </form>
+          <ul class="nav navbar-nav">
+              <div class = "dropdown">
+                  <a href="{% url 'miPerfil' %}" class="btn btn-primary" role="button">{% trans "Mi perfil" %}</a>
+                  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                      <span class="caret"></span>
+                  </button>
+                  <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu1">
+                      <li><a href="{% url 'crearRuta' %}">{% trans "Crear ruta" %}</a> </li>
+                      <li><a href="{% url 'crearLugarInteres' %}">{% trans "Crear lugar de interés" %}</a> </li>
+                      <li role="separator" class="divider"></li>
+                      <li><a href="{% url 'miPerfil' %}">{% trans "Mi perfil" %}</a> </li>
+                      <li><a href="{% url 'editarPerfil' %}">{% trans "Editar perfil" %}</a> </li>
+                      <li><a class="barra" href="{% url 'logout'%}">{% trans "Cerrar sesión" %}</a></li>
+                  </ul>
+              </div>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <h1 id="busqueda">{% trans "Búsqueda" %}</h1>
+    <h2>{% blocktrans %} {{ titulo }} {% endblocktrans %}</h2>
+    <div class="resultados">
+        <ul class="nav nav-pills">
+            <li role="presentation" class="active"><a href="#rutas" data-toggle="tab">{% trans "Rutas" %}</a></li>
+            <li role="presentation"><a href="#usuarios" data-toggle="tab">{% trans "Usuarios" %}</a></li>
+            <li role="presentation"><a href="#lugares_de_interes" data-toggle="tab">{% trans "Lugares de interés" %}</a></li>
+        </ul>
+        <div class="tab-content clearfix">
+	    	<div class="tab-pane active" id="rutas">
+                {% if rutas %}
+                    <ul class="list-group">
+                        {% for ruta in rutas %}
+                                    <li class="list-group-item"><a href="{% url 'ruta' ruta.id %}">{{ ruta.titulo }}</a></li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <h3>{% trans "No se han encontrado coincidencias" %}</h3>
+                {% endif %}
+            </div>
+	    	<div class="tab-pane" id="usuarios">
+                {% if usuarios %}
+                    <ul class="list-group">
+                        {% for usuario in usuarios %}
+                        <li class="list-group-item"><a href="{% url 'usuario' usuario.id %}">{{ usuario.alias }}</a></li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <h3>{% trans "No se han encontrado coincidencias" %}</h3>
+                {% endif %}
+            </div>
+            <div class="tab-pane" id="lugares_de_interes">
+                {% if lugares_interes %}
+                    <a id="nuevo-li" href="{% url 'crearLugarInteres' %}" class="nueva-ruta">{% trans "¿No existe el lugar de interés que estás buscando? Créalo aquí" %}</a>
+                    <ul class="list-group">
+                        {% for lugar_interes in lugares_interes %}
+                        <li class="list-group-item"><a href="{% url 'lugarInteres' lugar_interes.id %}">{{ lugar_interes.nombre }}</a></li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <h3>{% trans "No se han encontrado coincidencias" %}</h3>
+                    <a href="{% url 'crearLugarInteres' %}" class="nueva-ruta">{% trans "¿No existe el lugar de interés que estás buscando? Créalo aquí" %}</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+</body>
+</html>

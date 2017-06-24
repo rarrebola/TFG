@@ -1,0 +1,142 @@
+body{
+    color: #002f2f;
+    font-family: 'Muli';
+    position: relative;
+}
+h1{
+    color: #046380;
+    font-family: 'Pacifico';
+    font-size: 300%;
+    text-align: left;
+    position: relative;
+    padding: 20px 0;
+    margin-left:30px;
+    margin-top:60px;
+}
+.cuerpo a, .nueva-ruta, .panel-body a{
+    color: #31353d;
+    font-family: 'Muli'
+    position: relative;
+    margin-left:30px;
+}
+.container-fluid{
+    background-color:#002f2f;
+    margin:0;
+}
+.navbar-default{
+    border-color:#002f2f;
+}
+.navbar-default .navbar-brand{
+    color:#EFECCA;
+    font-family: 'Pacifico';
+    margin-right: 10px;
+}
+
+.list-group a{
+    margin-top:3px;
+    color:#002f2f;
+}
+.list-group{
+    margin-left:20px;
+    border-rigt:30px;
+    margin-top: 10px;
+    position:relative;
+    max-width:50%;
+}
+.list-group-item{
+    border-color:#A7A37E;
+    background-color:#E6E2AF;
+    list-style-type: none;
+}
+.cuerpo{
+    position:relative;
+    max-width:100%;
+    background-color:#efecca;
+ }
+
+button{
+    background-color: #046380;
+}
+ p,h2,.list-group, h3, h4{
+    margin-left:30px;
+    margin-right:50px;
+ }
+ p{
+    text-align:justify;
+ }
+.navbar-collapse .navbar-nav > li > a{
+    color: #efecca;
+}
+.btn-primary{
+    color: #efecca;
+    border-color: #efecca;
+    background: #002f2f;
+    margin-left:30px;
+    margin-bottom:10px;
+}
+
+input[type="text"], select{
+    margin-left:30px;
+}
+select{
+    width: 400px;
+    size: 30;
+    height: 100%;
+}
+.busqueda{
+    background-color: #a7a37e;
+    color: #fff;
+    border-radius: 3px;
+}
+input[type="submit"]{
+    margin-left:30px;
+    background-color: #a7a37e;
+    color: #fff;
+    border-radius: 3px;
+}
+
+.panel > .panel-heading{
+    background-image: none;
+    background-color: #efecca;
+    color: #002f2f;
+}
+
+label{
+    margin-left:30px;
+}
+
+td{
+    padding-left: 10px;
+    padding-top: 5px;
+    position:relative;
+}
+
+textarea{
+    width: 600px;
+    height: 100px;
+}
+
+#map {
+   width: 90%;
+   margin: 0 auto;
+}
+
+.dropdown{
+    position: absolute;
+    margin-top:8px;
+    right: 50px;
+}
+
+.dropdown .btn-default{
+    margin-bottom:8px;
+    background-image: none;
+}
+.btn-default{
+    background-image: none;
+}
+
+#creador{
+    margin-left: 0px;
+    color: #046380;
+}
+

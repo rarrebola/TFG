@@ -1,0 +1,53 @@
+body{
+    color: #046380;;
+    font-family: 'Muli';
+}
+h1{
+    color: #046380;
+    font-family: 'Pacifico';
+    font-size: 500%;
+    text-align: center;
+    position: relative;
+    padding: 50px 0;
+}
+input[type="text"], [type="password"], [type="email"]{
+    color: black;
+}
+input[type="submit"]{
+    background-color: #a7a37e;
+    color: #fff;
+    border-radius: 3px;
+    margin-top:3px;
+}
+div{
+    background-color:#E6E2AF;;
+    padding: 70px 0;
+    text-align: center;
+    align: center;
+}
+.form_usuario{
+    rigth: 0;
+    margin-top: 0;
+    margin-right: auto;
+    margin-bottom: 0px;
+    margin-left: auto;
+    max-width: 250px;
+}
+.form_registro{
+    rigth: 0;
+    margin-top: 0;
+    margin-right: auto;
+    margin-bottom: 0px;
+    margin-left: auto;
+    max-width: 450px;
+}
+a{
+    color: #31353d;
+}
+a:hover{
+    color: #002f2f;
+}
+form li{
+    list-style-type: none;
+    color:red;
+}
